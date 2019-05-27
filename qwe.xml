@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<graphe>
+  <cercle color="0xff0000ff" id="0" radius="25.0" x="116.0" y="130.0">
+    <name x="109.6376953125" y="130.0">0</name>
+  </cercle>
+  <cercle color="0x000000ff" id="1" radius="25.0" x="272.0" y="131.0">
+    <name x="265.6376953125" y="131.0">1</name>
+  </cercle>
+  <arete color="0x0000ffff" endX="272.0" endY="131.0" sd="1" sg="0" startX="116.0" startY="130.0">
+    <cout cout="6" x="194.0" y="130.5"/>
+  </arete>
+</graphe>

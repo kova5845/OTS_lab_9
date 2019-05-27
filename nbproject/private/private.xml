@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project-private xmlns="http://www.netbeans.org/ns/project-private/1">
+    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
+    <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
+        <group>
+            <file>file:/home/alexey/NetBeansProjects/GE/src/Editeur.java</file>
+            <file>file:/home/alexey/NetBeansProjects/GE/src/view/graphical/LinkUI.java</file>
+            <file>file:/home/alexey/NetBeansProjects/GE/src/model/Link.java</file>
+            <file>file:/home/alexey/NetBeansProjects/GE/src/view/graphical/Arc.java</file>
+            <file>file:/home/alexey/NetBeansProjects/GE/src/model/Sommet.java</file>
+            <file>file:/home/alexey/NetBeansProjects/GE/src/model/Graphe.java</file>
+            <file>file:/home/alexey/NetBeansProjects/GE/src/view/graphical/TextSommet.java</file>
+            <file>file:/home/alexey/NetBeansProjects/GE/src/parsexml/ParserXML.java</file>
+            <file>file:/home/alexey/NetBeansProjects/GE/src/view/ModelObserver.java</file>
+            <file>file:/home/alexey/NetBeansProjects/GE/src/model/Model.java</file>
+            <file>file:/home/alexey/NetBeansProjects/GE/src/view/graphical/SommetCercle.java</file>
+            <file>file:/home/alexey/NetBeansProjects/GE/src/view/graphical/IG.java</file>
+            <file>file:/home/alexey/NetBeansProjects/GE/src/controller/Controller.java</file>
+            <file>file:/home/alexey/NetBeansProjects/GE/src/view/graphical/Arete.java</file>
+            <file>file:/home/alexey/NetBeansProjects/GE/src/view/graphical/SommetRectangle.java</file>
+            <file>file:/home/alexey/NetBeansProjects/GE/src/view/graphical/SommetUI.java</file>
+        </group>
+    </open-files>
+</project-private>
