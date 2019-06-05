@@ -95,7 +95,7 @@ public class Editeur extends Application {
 		}
 	    });
 
-	stage.setTitle("Editeur de graphes");
+	stage.setTitle("Graph Editor");
 	scene = new Scene(bp);
 	stage.setScene(scene);
 	stage.show();

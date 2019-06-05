@@ -1,12 +1,27 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <graphe>
-  <cercle color="0xff0000ff" id="0" radius="25.0" x="116.0" y="130.0">
-    <name x="109.6376953125" y="130.0">0</name>
+  <cercle color="0x000000ff" id="0" radius="25.0" x="103.0" y="147.0">
+    <name x="96.6376953125" y="147.0">0</name>
   </cercle>
-  <cercle color="0x000000ff" id="1" radius="25.0" x="272.0" y="131.0">
-    <name x="265.6376953125" y="131.0">1</name>
+  <cercle color="0x000000ff" id="1" radius="25.0" x="273.0" y="138.0">
+    <name x="266.6376953125" y="138.0">1</name>
   </cercle>
-  <arete color="0x0000ffff" endX="272.0" endY="131.0" sd="1" sg="0" startX="116.0" startY="130.0">
-    <cout cout="6" x="194.0" y="130.5"/>
+  <cercle color="0x000000ff" id="2" radius="25.0" x="189.0" y="252.0">
+    <name x="182.6376953125" y="252.0">2</name>
+  </cercle>
+  <cercle color="0x000000ff" id="3" radius="25.0" x="193.0" y="55.0">
+    <name x="186.6376953125" y="55.0">3</name>
+  </cercle>
+  <arete color="0x000000ff" endX="193.0" endY="55.0" sd="3" sg="0" startX="103.0" startY="147.0">
+    <cout cout="1" x="148.0" y="101.0"/>
+  </arete>
+  <arete color="0x000000ff" endX="273.0" endY="138.0" sd="1" sg="3" startX="193.0" startY="55.0">
+    <cout cout="3" x="233.0" y="96.5"/>
+  </arete>
+  <arete color="0x000000ff" endX="189.0" endY="252.0" sd="2" sg="1" startX="273.0" startY="138.0">
+    <cout cout="15" x="231.0" y="195.0"/>
+  </arete>
+  <arete color="0x000000ff" endX="189.0" endY="252.0" sd="2" sg="0" startX="103.0" startY="147.0">
+    <cout cout="9" x="146.0" y="199.5"/>
   </arete>
 </graphe>

@@ -40,6 +40,8 @@ import javafx.util.Duration;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
+import javafx.scene.control.Alert;
+import model.Link;
 
 public abstract class SommetUI {
     Sommet data;
@@ -61,7 +63,9 @@ public abstract class SommetUI {
     MenuItem edit_name = new MenuItem("edit name");
     MenuItem delete = new MenuItem("delete");
     MenuItem edit_color = new MenuItem("edit color");
-//    Menu dijkstra = new Menu("dijkstra");
+    MenuItem dijkstra = new MenuItem("minimal wave");
+    MenuItem eiler = new MenuItem("eiler");
+    MenuItem information = new MenuItem("information");
 //    Menu kruskal = new Menu("kruskal");
 //    Menu prim = new Menu("prim");
 //    MenuItem continuous1 = new MenuItem("continuous");
@@ -92,11 +96,51 @@ public abstract class SommetUI {
 	dropShadow.setColor(Color.BLACK);
 	makeDraggable();
 
-	contextMenu.getItems().addAll(edit_color,edit_size,edit_name,delete); // dijkstra, kruskal, prim
+	contextMenu.getItems().addAll(edit_color, edit_size, edit_name, 
+                delete, dijkstra, eiler, information); // dijkstra, kruskal, prim
 //	dijkstra.getItems().addAll(continuous1,stepByStep1);
 //	kruskal.getItems().addAll(continuous2,stepByStep2);
 //	prim.getItems().addAll(continuous3,stepByStep3);
-	
+
+        information.setOnAction((ActionEvent e) -> {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            
+            ArrayList<Sommet> sommets = IG.controller.graphe.sommets;
+            ArrayList<Link> aretes = IG.controller.graphe.aretes;
+            int arr[][] = new int[sommets.size()][sommets.size()];
+            for(int i = 0; i < sommets.size(); i++){
+                for(int j = 0; j < sommets.size(); j++){
+                    arr[i][j] = 0;
+                }
+            }
+            for(Link l : aretes){
+                int start = sommets.indexOf(l.start);
+                int end = sommets.indexOf(l.end);
+                arr[start][end] = l.poids;
+                arr[end][start] = l.poids;
+            }
+            String str = "";
+            for(int i = 0; i < sommets.size(); i++){
+                for(int j = 0; j < sommets.size(); j++){
+                    str += Integer.toString(arr[i][j]);
+                    if(arr[i][j] >= 10){
+                        str += "  ";
+                    } else {
+                        str += "    ";
+                    }
+                }
+                str += "\n";
+            }
+            
+            alert.setHeaderText("Number of nodes is " + IG.controller.graphe.sommets.size() + 
+                    " \nNumber of edges is " + IG.controller.graphe.aretes.size()/2 + "\n" +
+                    str);
+            alert.showAndWait();
+        });
+        
+        eiler.setOnAction(e -> {
+            IG.controller.graphe.eiler(data);
+        });
         
         edit_color.setOnAction(e -> {
             if(colorBlack){
@@ -247,13 +291,14 @@ public abstract class SommetUI {
 		    }
 		}
 	    });
+        
 
 	SommetUI soo = this;
-//	continuous1.setOnAction(e-> {
-//		dijkstra_enabled.set(true);
-////		IG.stopAlgo.setDisable(false);
-//		IG.controller.execDijkstra(soo,false);
-//	    });
+	dijkstra.setOnAction(e-> {
+		dijkstra_enabled.set(true);
+//		IG.stopAlgo.setDisable(false);
+		IG.controller.execDijkstra(soo,false);
+	    });
 
 //	stepByStep1.setOnAction(e -> {
 //		dijkstra_enabled.set(true);
@@ -404,7 +449,7 @@ public abstract class SommetUI {
 		@Override
 		public void handle(MouseEvent e) {
 		    if (e.getButton() == MouseButton.SECONDARY) {
-			contextMenu.show((Node)shape,Side.RIGHT,0,0);
+			contextMenu.show((Node)shape,e.getScreenX(),e.getScreenY());
 		    }
 		}
 	    };

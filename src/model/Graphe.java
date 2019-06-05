@@ -6,10 +6,11 @@ import java.util.HashMap;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Dictionary;
+import javafx.scene.control.Alert;
 
 // Le graphe en MEMOIRE !!!
 public class Graphe extends Model {
-    ArrayList<Sommet> sommets = new ArrayList<Sommet>();
+    public ArrayList<Sommet> sommets = new ArrayList<Sommet>();
     public ArrayList<Link> aretes = new ArrayList<Link>();
     public ArrayList<ArrayList<Link>> stepsDijkstra = new ArrayList<ArrayList<Link>>();// La liste des chemins pour dijkstra d'un sommet vers un autre
     public ArrayList<Link> stepsKruskal = new ArrayList<Link>();
@@ -126,8 +127,8 @@ public class Graphe extends Model {
 	for (Link l : chemin) {
 	    if (validate==false) {
 		if (!deltaContainsLink(dv,delta,l)) { //Si l'arete n'appartient pas a un autre plus court chemin
-		    l.updateObserver(validate); // on colorie en noir (pour "effacer" graphiquement le chemin
-		}
+                    l.updateObserver(validate); // on colorie en noir (pour "effacer" graphiquement le chemin
+                }
 	    } else {
 		l.updateObserver(validate);//colorie en rouge
 	    }
@@ -156,6 +157,7 @@ public class Graphe extends Model {
 	    
     public void dijkstra(Sommet s, boolean stepByStep) {
 	//updateObserver(State.RUNNING);
+        String info = "";
 	ArrayList<Sommet> sommetsTmp = cloneSommets();
 	ArrayList<Link> aretesTmp = cloneAretes(aretes);
         HashMap<Sommet,DataSommet> delta = new HashMap<Sommet,DataSommet>();
@@ -167,8 +169,9 @@ public class Graphe extends Model {
 	}
 	while (sommetsTmp.size() > 0) {
 	    Sommet x = minDist(delta,sommetsTmp);
-	    if (!stepByStep) 
-		x.updateObserver(true); //colorier le sommet x en rouge
+	    if (!stepByStep){ 
+		x.updateObserver(true);
+            }                               //colorier le sommet x en rouge
 	    for (Sommet v : x.voisins) {
 		DataSommet dv = delta.get(v);
 		DataSommet dx = delta.get(x);
@@ -179,122 +182,172 @@ public class Graphe extends Model {
 		    dv.valChemin = deltaX + vxv;
 		    //System.out.println("old way from " + s.nb + " to " + v.nb + " : " + dv.chemin);
 		    if (!stepByStep) 
-			colorierChemin(dv,delta,dv.chemin,false);
+                    colorierChemin(dv,delta,dv.chemin,false);
 		    dv.chemin.removeAll(dv.chemin);//Une fois le nouveau + court chemin decouvert on supprime lancien
 		    dv.chemin.addAll(dx.chemin);//Le nouveau plus court chemin de v devient celui de x ------->
 		    dv.chemin.add(getLink(x,v,aretesTmp));//-------> plus l'arete x-v
-		    System.out.println("new way from " + s.nb + " to " + v.nb + " : " + dv.chemin);
+                    int way = 0;
+                    for(Link l : dv.chemin){
+                        way += l.poids;
+                    }
+                    
+                    info += "way from " + s.nb + " to " + v.nb + " : " + way + "\n";
+		    System.out.println("new way from " + s.nb + " to " + v.nb + " : " + way);
 		    ArrayList<Link> clonedv = cloneAretes(dv.chemin);//Pour que le chemin en question soit vraiment unique (sinon le dernier plus court chemin va ecraser tous les précédents découverts)
 		    stepsDijkstra.add(clonedv);
-		    if (!stepByStep)
+		    if (!stepByStep){
 			colorierChemin(dv,delta,dv.chemin,true);
+                    }
 		}
+                
 	    }
 	    sommetsTmp.remove(x);
 	}
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setHeaderText(info);
+        alert.showAndWait();
 	updateObserver(stepsDijkstra.size());
 	//updateObserver(State.STOP);
     }
 
-    public void viderStepsKruskal() {
-	stepsKruskal.removeAll(stepsKruskal);
+    
+    
+    public void eiler(Sommet s){
+        ArrayList<Sommet> sommets = cloneSommets();
+        ArrayList<Link> links = cloneAretes(aretes);
+        boolean flag = false;
+        Sommet s1 = s;
+        Sommet s2 = s.voisins.get(0);
+        ArrayList<Sommet> som = new ArrayList<>();
+        ArrayList<Link> lin = new ArrayList<>();
+        som.add(s);
+        while(sommets.size() > 0){
+            for(Sommet c : s2.voisins){
+                if(c != s1){
+                    for(Link l : links){
+                        if(l.start == s1 && l.end == s2){
+                            lin.add(l);
+                        }
+                    }
+                    som.add(s2);
+                    sommets.remove(s1);
+                    s1 = s2;
+                    s2 = c;
+                    break;
+                }
+            }
+        }
+        if(som.get(0) == som.get(som.size() - 1)){
+            for(Sommet k : som){
+                k.updateObserver(true);
+            }
+            for(Link l : lin){
+                l.updateObserver(true);
+            }
+        }
+        System.out.println(som);
     }
-
-    public void displayStepKruskal(int indice, boolean b) {
-	Link l = stepsKruskal.get(indice);
-	l.updateObserver(b);
-	l.start.updateObserver(b);
-	l.end.updateObserver(b);
-    }
-
-    public void kruskal(boolean stepByStep) {
-	Collections.sort(aretes, new Comparator<Link>(){
-		@Override
-		public int compare(Link l1, Link l2) {
-		    return ((Integer)l1.poids).compareTo(l2.poids);
-		}
-	    });
-	for (Link l : aretes) {
-	    Sommet st = l.start;
-	    Sommet en = l.end;
-	    if (!st.find(en)) {
-		if (!stepByStep) {
-		    l.updateObserver(true);
-		    st.updateObserver(true);
-		    en.updateObserver(true);
-		}
-		stepsKruskal.add(l);
-		st.union(en);
-	    }
-	}
-	System.out.println(stepsKruskal);
-	updateObserver(stepsKruskal.size());
-    }
-
-    public void viderStepsPrim() {
-	stepsPrim.removeAll(stepsPrim);
-    }
-
-    public void displayStepPrim(int indice, boolean b) {
-	Link l = stepsPrim.get(indice);
-	l.updateObserver(b);
-	l.start.updateObserver(b);
-	l.end.updateObserver(b);
-    }
-
-    public void prim(Sommet s, boolean stepByStep) {
-	HashMap<Sommet,Sommet> pred = new HashMap<Sommet,Sommet>();
-	for (Sommet so : sommets) {
-	    pred.put(so,null);
-	}
-	s.cout = 0;
-	LinkedList<Sommet> file = new LinkedList<Sommet>();
-	for (Sommet so : sommets) {
-	    if (so != s) {
-		file.add(so);
-	    }
-	}
-	file.addFirst(s);
-	while (!file.isEmpty()) {
-	    Sommet t = file.getFirst();
-	    file.removeFirst();
-	    for (Sommet v : t.voisins) {
-		if (file.contains(v) && v.cout > getCout(t,v)) {
-		    v.cout = getCout(t,v);
-		    Link l = getLink(t,v,aretes);
-		    /*if (!stepByStep) {
-			l.updateObserver(true);
-			t.updateObserver(true);
-			v.updateObserver(true);
-		    }*/
-		    //stepsPrim.add(l);
-		    pred.replace(v,t);
-		    for (int i=0; i<file.size(); i++) {
-			Collections.sort(file, new Comparator<Sommet>() {
-				@Override
-				public int compare(Sommet s1, Sommet s2) {
-				    return ((Integer)s1.cout).compareTo(s2.cout);
-				}
-			    });
-		    }
-		}
-	    }
-	}
-	for (Sommet som : pred.keySet()) {
-	    if (pred.get(som) != null) {
-		Link l = getLink(som,pred.get(som),aretes);
-		if (!stepByStep) {
-		    l.updateObserver(true);
-		    som.updateObserver(true);
-		    pred.get(som).updateObserver(true);
-		}
-		stepsPrim.add(l);
-	    }
-	}
-	updateObserver(stepsPrim.size());
-	for (Sommet so : sommets) {
-	    so.cout = Integer.MAX_VALUE;
-	}
-    }
+    
+    
+//    public void viderStepsKruskal() {
+//	stepsKruskal.removeAll(stepsKruskal);
+//    }
+//
+//    public void displayStepKruskal(int indice, boolean b) {
+//	Link l = stepsKruskal.get(indice);
+//	l.updateObserver(b);
+//	l.start.updateObserver(b);
+//	l.end.updateObserver(b);
+//    }
+//
+//    public void kruskal(boolean stepByStep) {
+//	Collections.sort(aretes, new Comparator<Link>(){
+//		@Override
+//		public int compare(Link l1, Link l2) {
+//		    return ((Integer)l1.poids).compareTo(l2.poids);
+//		}
+//	    });
+//	for (Link l : aretes) {
+//	    Sommet st = l.start;
+//	    Sommet en = l.end;
+//	    if (!st.find(en)) {
+//		if (!stepByStep) {
+//		    l.updateObserver(true);
+//		    st.updateObserver(true);
+//		    en.updateObserver(true);
+//		}
+//		stepsKruskal.add(l);
+//		st.union(en);
+//	    }
+//	}
+//	System.out.println(stepsKruskal);
+//	updateObserver(stepsKruskal.size());
+//    }
+//
+//    public void viderStepsPrim() {
+//	stepsPrim.removeAll(stepsPrim);
+//    }
+//
+//    public void displayStepPrim(int indice, boolean b) {
+//	Link l = stepsPrim.get(indice);
+//	l.updateObserver(b);
+//	l.start.updateObserver(b);
+//	l.end.updateObserver(b);
+//    }
+//
+//    public void prim(Sommet s, boolean stepByStep) {
+//	HashMap<Sommet,Sommet> pred = new HashMap<Sommet,Sommet>();
+//	for (Sommet so : sommets) {
+//	    pred.put(so,null);
+//	}
+//	s.cout = 0;
+//	LinkedList<Sommet> file = new LinkedList<Sommet>();
+//	for (Sommet so : sommets) {
+//	    if (so != s) {
+//		file.add(so);
+//	    }
+//	}
+//	file.addFirst(s);
+//	while (!file.isEmpty()) {
+//	    Sommet t = file.getFirst();
+//	    file.removeFirst();
+//	    for (Sommet v : t.voisins) {
+//		if (file.contains(v) && v.cout > getCout(t,v)) {
+//		    v.cout = getCout(t,v);
+//		    Link l = getLink(t,v,aretes);
+//		    /*if (!stepByStep) {
+//			l.updateObserver(true);
+//			t.updateObserver(true);
+//			v.updateObserver(true);
+//		    }*/
+//		    //stepsPrim.add(l);
+//		    pred.replace(v,t);
+//		    for (int i=0; i<file.size(); i++) {
+//			Collections.sort(file, new Comparator<Sommet>() {
+//				@Override
+//				public int compare(Sommet s1, Sommet s2) {
+//				    return ((Integer)s1.cout).compareTo(s2.cout);
+//				}
+//			    });
+//		    }
+//		}
+//	    }
+//	}
+//	for (Sommet som : pred.keySet()) {
+//	    if (pred.get(som) != null) {
+//		Link l = getLink(som,pred.get(som),aretes);
+//		if (!stepByStep) {
+//		    l.updateObserver(true);
+//		    som.updateObserver(true);
+//		    pred.get(som).updateObserver(true);
+//		}
+//		stepsPrim.add(l);
+//	    }
+//	}
+//	updateObserver(stepsPrim.size());
+//	for (Sommet so : sommets) {
+//	    so.cout = Integer.MAX_VALUE;
+//	}
+//    }
 		
 }

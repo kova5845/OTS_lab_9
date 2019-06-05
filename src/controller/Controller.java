@@ -7,7 +7,7 @@ import view.graphical.SommetUI;
 import view.graphical.LinkUI;
 
 public class Controller {
-    Graphe graphe;
+    public Graphe graphe;
 
     public Controller(Graphe graphe) {
 	this.graphe = graphe;
@@ -70,38 +70,38 @@ public class Controller {
 	graphe.dijkstra(sui.getData(),stepByStep);
     }
 
-    public void execKruskal(boolean stepByStep) {
-	graphe.kruskal(stepByStep);
-    }
+//    public void execKruskal(boolean stepByStep) {
+//	graphe.kruskal(stepByStep);
+//    }
 
-    public void execPrim(SommetUI sui, boolean stepByStep) {
-	graphe.prim(sui.getData(),stepByStep);
-    }
+//    public void execPrim(SommetUI sui, boolean stepByStep) {
+//	graphe.prim(sui.getData(),stepByStep);
+//    }
 
     public void execStepDijkstra(int advanceAlgo) {
 	//System.out.println(advanceAlgo);
 	graphe.displayStepDijkstra(advanceAlgo);
     }
 
-    public void execStepKruskal(int advanceAlgo, boolean b) {
-	//System.out.println(advanceAlgo);
-	graphe.displayStepKruskal(advanceAlgo,b);
-    }
+//    public void execStepKruskal(int advanceAlgo, boolean b) {
+//	//System.out.println(advanceAlgo);
+//	graphe.displayStepKruskal(advanceAlgo,b);
+//    }
 
-    public void execStepPrim(int advanceAlgo, boolean b) {
-	//System.out.println(advanceAlgo);
-	graphe.displayStepPrim(advanceAlgo,b);
-    }
+//    public void execStepPrim(int advanceAlgo, boolean b) {
+//	//System.out.println(advanceAlgo);
+//	graphe.displayStepPrim(advanceAlgo,b);
+//    }
 
     public void viderStepsDijkstra() {
 	graphe.viderStepsDijkstra();
     }
 
-    public void viderStepsKruskal() {
-	graphe.viderStepsKruskal();
-    }
+//    public void viderStepsKruskal() {
+//	graphe.viderStepsKruskal();
+//    }
 
-    public void viderStepsPrim() {
-	graphe.viderStepsPrim();
-    }
+//    public void viderStepsPrim() {
+//	graphe.viderStepsPrim();
+//    }
 }

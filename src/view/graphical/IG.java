@@ -8,6 +8,7 @@ import java.io.FileInputStream;
 
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -64,10 +65,17 @@ import javafx.scene.shape.Sphere;
 import javafx.scene.shape.Box;
 import javafx.scene.shape.DrawMode;
 import javafx.animation.*;
+import javafx.geometry.Side;
 import javafx.util.Duration;
 import javafx.scene.shape.CullFace;
 import javafx.scene.paint.PhongMaterial;
 import javafx.scene.PerspectiveCamera;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ContextMenu;
+import javafx.scene.control.MenuItem;
+import javafx.scene.input.MouseButton;
+import model.Link;
+import model.Sommet;
 
 //Correspond à la fenêtre
 
@@ -117,6 +125,45 @@ public class IG extends BorderPane implements ModelObserver {
 	
 	pane.setPrefSize(TAILLE, TAILLE-100);
 	
+         
+        
+//        ContextMenu contextMenu = new ContextMenu();
+//        MenuItem information = new MenuItem("information");
+//        contextMenu.getItems().add(information);
+//        pane.setOnMousePressed(new EventHandler<MouseEvent>(){
+//            @Override
+//            public void handle(MouseEvent e) {
+//                if (e.getButton() == MouseButton.SECONDARY) {
+//                    contextMenu.show((Node)pane,e.getScreenX(),e.getScreenY());
+//                }
+//            }
+//        });
+        
+        
+        pane.setOnMouseClicked(e -> {
+            for(Sommet s : controller.graphe.sommets){
+                if(s.observer.colorBlack){
+                    s.observer.shape.setStroke(Color.BLACK);
+                    s.observer.name.setFill(Color.BLACK);
+                }
+                else{
+                    s.observer.shape.setStroke(Color.RED);
+                    s.observer.name.setFill(Color.RED);
+                }
+            }
+            for(Link l : controller.graphe.aretes){
+                if(l.observer.colorBlack){
+                    l.observer.link.setStroke(Color.BLACK);
+                    l.observer.poids.setFill(Color.BLACK);
+                }
+                else{
+                    l.observer.link.setStroke(Color.BLUE);
+                    l.observer.poids.setFill(Color.BLUE);
+                }
+            }
+        });
+        
+        
 	/////////////////////// Creation le bouton pour créer un cercle
 	
 	Canvas cercCanvas = new Canvas(25, 25);//partie graphique du tooglebutton du cercle

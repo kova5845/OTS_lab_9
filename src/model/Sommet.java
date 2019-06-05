@@ -5,9 +5,9 @@ import view.graphical.SommetUI;
 import java.util.ArrayList;
 
 public class Sommet {
-    ArrayList<Sommet> voisins = new ArrayList<Sommet>();
-    ArrayList<Link> chemin = new ArrayList<Link>();// Pour dijkstra
-    SommetUI observer; //le sommet graphique associé
+    public ArrayList<Sommet> voisins = new ArrayList<Sommet>();
+    public ArrayList<Link> chemin = new ArrayList<Link>();// Pour dijkstra
+    public SommetUI observer; //le sommet graphique associé
     int nb, taille, cout = Integer.MAX_VALUE; //taille : pour kruskal , cout : pour prim
     Sommet pere; // Pour kruskal
     

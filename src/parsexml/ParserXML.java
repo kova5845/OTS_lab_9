@@ -138,7 +138,6 @@ public class ParserXML {
                         line.setStroke(Color.web(e.getAttribute("color")));
                         tx.setFill(Color.web(e.getAttribute("color")));
                         arete.colorBlack = line.getStroke().equals(Color.BLACK);
-                        arete.colorBlack = e.getAttribute("color").equals(Color.BLACK);
 			arete.setPoidsProperties(); //Pour que le texte du poids reste dependant de l'arete quand on la déplace
 			ig.pane.getChildren().add(arete.link);
 			ig.pane.getChildren().add(arete.poids);
